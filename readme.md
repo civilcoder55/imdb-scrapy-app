@@ -36,7 +36,7 @@ test crawler
 scrapy crawl movie -a url="https://www.imdb.com/title/tt1160419"
 ```
 
-to access crawl through api with instant response run from your shell or through postman
+to access crawl through api with instant response run from your shell or through api test client like insomia or postman
 ```
 curl http://localhost:6800/response.json -d project=imdb -d spider=movie -d url="https://www.imdb.com/title/tt1160419"
 ```
