@@ -31,5 +31,6 @@ class BestMoviesSpider(CrawlSpider):
             'duration': response.xpath("normalize-space(//li[@class='ipc-inline-list__item']/text())").get(),
             'genre': response.xpath("((//div[@class='ipc-metadata-list-item__content-container'])[13])//a/text()").getall(),
             'rating': response.xpath("//span[contains(@class,'AggregateRatingButton__RatingScore')]//text()").get(),
+            'description' : response.xpath("//span[contains(@class,'GenresAndPlot__TextContainerBreakpointXS_TO_M-cum89p-0 dcFkRD')]//text()").get(),
             'movie_url': response.url
         }
