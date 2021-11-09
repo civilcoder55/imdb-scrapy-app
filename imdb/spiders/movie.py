@@ -25,12 +25,17 @@ class MovieSpider(scrapy.Spider):
 
     
     def parse(self, response):
+        title = response.xpath("//div[@class='OriginalTitle__OriginalTitleText-jz9bzr-0 llYePj']/text()").get()
+        if not title:
+            title = response.xpath("//div[contains(@class, 'TitleBlock__TitleContainer')]/h1/text()").get()
+        else:
+            title = title.replace("Original title: ","")
         yield {
-            'title': response.xpath("//h1[contains(@class, 'TitleHeader__TitleText')]/text()").get(),
+            'title': title,
             'year': response.xpath("(//li[@class='ipc-inline-list__item']/a/text())[1]").get(),
             'duration': response.xpath("normalize-space(//li[@class='ipc-inline-list__item']/text())").get(),
-            'genre': response.xpath("//li[@data-testid='storyline-genres']//a/text()").getall(),
+            'genre': response.xpath("//li[contains(@data-testid,'storyline-genres')]/div/ul/li/a//text()").getall(),
             'rate': response.xpath("//span[contains(@class,'AggregateRatingButton__RatingScore')]//text()").get(),
             'description' : response.xpath("//span[contains(@class,'GenresAndPlot__TextContainerBreakpointXS_TO_M-cum89p-0 dcFkRD')]//text()").get(),
-            'movie_url': response.url
+            'country' : response.xpath("//li[contains(@data-testid,'title-details-origin')]/div/ul/li/a//text()").get()
         }
