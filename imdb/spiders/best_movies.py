@@ -25,9 +25,9 @@ class BestMoviesSpider(CrawlSpider):
         return request
 
     def parse_item(self, response):
-        title = response.xpath("//div[@class='OriginalTitle__OriginalTitleText-jz9bzr-0 llYePj']/text()").get()
+        title = response.xpath("//h1[contains(@data-testid,'hero-title-block__original-title')]/text()").get()
         if not title:
-            title = response.xpath("//div[contains(@class, 'TitleBlock__TitleContainer')]/h1/text()").get()
+            title = response.xpath("//h1[contains(@data-testid,'hero-title-block__title')]/text()").get()
         else:
             title = title.replace("Original title: ","")
         yield {
@@ -35,7 +35,7 @@ class BestMoviesSpider(CrawlSpider):
             'year': response.xpath("(//li[@class='ipc-inline-list__item']/a/text())[1]").get(),
             'duration': response.xpath("normalize-space(//li[@class='ipc-inline-list__item']/text())").get(),
             'genre': response.xpath("//li[contains(@data-testid,'storyline-genres')]/div/ul/li/a//text()").getall(),
-            'rate': response.xpath("//span[contains(@class,'AggregateRatingButton__RatingScore')]//text()").get(),
-            'description' : response.xpath("//span[contains(@class,'GenresAndPlot__TextContainerBreakpointXS_TO_M-cum89p-0 dcFkRD')]//text()").get(),
+            'rate': response.xpath("//div[contains(@data-testid,'hero-rating-bar__aggregate-rating__score')]/span/text()").get(),
+            'description' : response.xpath("//span[contains(@data-testid,'plot-l')]//text()").get(),
             'country' : response.xpath("//li[contains(@data-testid,'title-details-origin')]/div/ul/li/a//text()").get()
         }
